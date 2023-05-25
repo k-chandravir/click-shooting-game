@@ -2,21 +2,16 @@ package com.training.clickshootinggame;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest
 //@ExtendWith(MockitoExtension.class)
-@WebMvcTest(ShootingService.class)
 public class ShootingServiceTest {
-
 //    @InjectMocks
     @Autowired
     private ShootingService shootingService;
@@ -47,4 +42,36 @@ public class ShootingServiceTest {
         int health = shootingService.getHeroHealth();
         assertEquals(health, 80);
     }
+
+    @Test
+    void shouldDecreaseHealthOfVillainByTwentyWhenHeroAttacks(){
+        shootingService.attack("villain");
+        int health = shootingService.getVillainHealth();
+        assertThat("after getting a hit from hero, villain", health, is(equalTo(80)));
+    }
+
+    @Test
+    void shouldTurnOnArmour(){
+        shootingService.toggleArmour(true);
+        assertThat(shootingService.armourStatus, is(true));
+    }
+
+    @Test
+    void shouldGiveHalfDamageToVillainWhenHeHasArmour(){
+        shootingService.toggleArmour(true);
+        shootingService.attack("villain");
+        int healthOfVillainAfterHit = shootingService.getVillainHealth();
+
+        assertThat( healthOfVillainAfterHit, is( equalTo(90)));
+    }
+
+    @Test
+    void shouldStillDamageTwentyToHeroWhenArmourIsOn(){
+        shootingService.toggleArmour(true);
+        shootingService.attack("hero");
+        int healthOfHeroAfterHit = shootingService.getHeroHealth();
+
+        assertThat( healthOfHeroAfterHit, is( equalTo(80)));
+    }
 }
+

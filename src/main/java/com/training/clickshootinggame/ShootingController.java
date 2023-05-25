@@ -29,7 +29,7 @@ public class ShootingController {
 
     @PostMapping("/armour")
     public ResponseEntity<Object> toggleArmour(@RequestParam("on-or-off") Boolean armourStatus){
-        shootingService.toggleArmour();
+        shootingService.toggleArmour(armourStatus);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

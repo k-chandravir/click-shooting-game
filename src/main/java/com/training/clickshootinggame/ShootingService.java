@@ -9,16 +9,32 @@ public class ShootingService {
 
     int heroHealth = 100;
     int villainHealth = 100;
+    Boolean armourStatus = false;
+
+    public void setHeroHealth(int heroHealth) {
+        this.heroHealth = heroHealth;
+    }
+    public void setVillainHealth(int villainHealth) {
+        this.villainHealth = villainHealth;
+    }
+    public void setArmour(boolean armourStatus) {
+        this.armourStatus = armourStatus;
+    }
+
     public int getHeroHealth() {
         return this.heroHealth;
     }
 
-
     public void attack(String characterGettingShot) {
-        if(characterGettingShot == "hero"){
+        if(characterGettingShot.equals("hero")){
             this.heroHealth -= 20;
-        }else{
-            this.villainHealth -=20;
+        }else if(characterGettingShot.equals("villain")){
+            if(this.armourStatus == false){
+                this.villainHealth -= 20;
+            }else{
+                this.villainHealth -= 10;
+            }
+
         }
     }
 
@@ -28,19 +44,9 @@ public class ShootingService {
     }
 
 
-    public void toggleArmour() {
-
+    public void toggleArmour(Boolean armourStatus) {
+        this.armourStatus = armourStatus;
     }
 
-    public void setHeroHealth(int i) {
-        heroHealth = i;
-    }
 
-    public void setVillainHealth(int i) {
-        villainHealth = i;
-    }
-
-    public void setArmour(boolean b) {
-
-    }
 }
